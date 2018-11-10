@@ -1,0 +1,12 @@
+{
+  "generator-yeogurt": {
+    "config": {
+      "projectName": "River Raid P5.js",
+      "htmlOption": "nunjucks",
+      "jsPreprocessor": "es6",
+      "cssOption": "stylus",
+      "testFramework": "jasmine"
+    },
+    "version": "2.0.1"
+  }
+}
