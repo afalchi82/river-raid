@@ -4,7 +4,7 @@ function keyPressed () {
 	if (key == ' ') {
   	b.up();
   } 
-}
+} 
 
 function mouseMoved () {
   log.updateText(mouseX)
