@@ -14,8 +14,17 @@ class Plane {
   
   render () {
     fill(steel);
-    // rect(this.pos.x, this.pos.y, 10, 10)
-    image(this.imgC, this.pos.x, this.pos.y,);
+    let sprite;
+    switch (true) {
+      case (this.dir > -2 && this.dir < 2): sprite = this.imgC;
+        break;
+      case (this.dir < 2): sprite = this.imgL;
+        break;
+      case (this.dir > 2): sprite = this.imgR;
+        break;
+      default: sprite = this.imgC;
+    }
+    image(sprite, this.pos.x, this.pos.y,);
   }
   
   update () {

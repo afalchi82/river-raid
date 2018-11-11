@@ -24,8 +24,21 @@ var Plane = function () {
     key: "render",
     value: function render() {
       fill(steel);
-      // rect(this.pos.x, this.pos.y, 10, 10)
-      image(this.imgC, this.pos.x, this.pos.y);
+      var sprite = void 0;
+      switch (true) {
+        case this.dir > -2 && this.dir < 2:
+          sprite = this.imgC;
+          break;
+        case this.dir < 2:
+          sprite = this.imgL;
+          break;
+        case this.dir > 2:
+          sprite = this.imgR;
+          break;
+        default:
+          sprite = this.imgC;
+      }
+      image(sprite, this.pos.x, this.pos.y);
     }
   }, {
     key: "update",

@@ -44,7 +44,7 @@ window.addEventListener('deviceorientation', function (e) {
       beta = e.beta,
       gamma = e.gamma;
 
-  plane.dir = e.gamma * .5;
+  plane.dir = e.gamma;
 
   // log.updateText(alpha + " " + beta + " " + gamma);
 });

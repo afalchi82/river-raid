@@ -1,3 +1,4 @@
 _doc
 node_modules
 share
+build/**/*.map 
