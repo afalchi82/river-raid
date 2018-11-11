@@ -1,50 +1,53 @@
 // Karma configuration
-// http://karma-runner.github.io/0.12/config/configuration-file.html
-'use strict';
-var path = require('path');
-var pjson = require('./package.json');
-var config = pjson.config;
-var dirs = config.directories;
-var testFiles = path.join(__dirname, dirs.source, '**/*.test.js');
-var preprocessors = {};
-preprocessors[testFiles] = ['browserify'];
+// Generated on Thu May 31 2018 10:26:00 GMT+0200 (ora legale Europa occidentale)
 
-var karmaConf = function(config) {
+module.exports = function(config) {
   config.set({
-    // base path, that will be used to resolve files and exclude
+
+    // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-    // testing framework to use (jasmine/mocha/qunit/...)
-    frameworks: ['browserify', 'jasmine'],
+
+    // frameworks to use
+    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+    frameworks: ['jasmine'],
+
 
     // list of files / patterns to load in the browser
     files: [
-      testFiles
+      'build/vendor/jquery/dist/jquery.min.js',
+      //{pattern: 'build/vendor/**/*.js', watched: false},
+      // 'build/vendor/jasmine-jquery/jasmine-jquery.js',
+      'build/vendor/vue/dist/vue.min.js',
+      'build/vendor/scrollreveal/dist/scrollreveal.min.js',
+      'build/vendor/slick-carousel/slick/slick.min.js',
+      'build/js/main.js',
+      'build/components/test-request/test-request.js',
+      'build/components/test-request/test-request.spec.js'
     ],
 
-    // list of files to exclude
-    exclude: [],
 
-    preprocessors: preprocessors,
+    // list of files / patterns to exclude
+    exclude: [
+    ],
 
-    browserify: {
-      debug: true,
-      transform: [
-        require('envify'),
-        require('babelify')
-      ]
+
+    // preprocess matching files before serving them to the browser
+    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    preprocessors: {
+      'src/**/*.js': ['babel']
     },
 
+
     // test results reporter to use
-    // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: ['progress'],
 
-    // Setup to allow external devices to access karma tests
-    // Change to '127.0.0.1' to disallow external access
-    host: '0.0.0.0',
 
     // web server port
-    port: 3012,
+    port: 9876,
+
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
@@ -56,29 +59,20 @@ var karmaConf = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
-    // Start these browsers, currently available:
-    // - Chrome
-    // - ChromeCanary
-    // - Firefox
-    // - Opera
-    // - Safari (only Mac)
-    // - PhantomJS
-    // - IE (only Windows)
-    browsers: ['PhantomJS'],
+    // start these browsers
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: ['Chrome'],
 
-    // If browser does not capture in given timeout [ms], kill it
-    captureTimeout: 60000,
-
-    // If browser does not have any activity for given timeout [ms], kill it
-    browserNoActivityTimeout: 60000,
 
     // Continuous Integration mode
-    // if true, it capture browsers, run tests and exit
-    singleRun: false
-  });
-};
+    // if true, Karma captures browsers, runs the tests and exits
+    singleRun: false,
 
-module.exports = karmaConf;
+    // Concurrency level
+    // how many browser should be started simultaneous
+    concurrency: Infinity
+  })
+}

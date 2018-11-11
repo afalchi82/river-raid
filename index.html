@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+  <link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+  <title>CodePen - A Pen by  Alessandro Falchi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Press+Start+2P'>
+
+      <style>
+      @import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Press Start 2P', cursive;
+}
+canvas {
+  display: block;
+  font-family: 'Press Start 2P', cursive;
+}
+
+    </style>
+
+  
+  
+  
+  
+
+</head>
+
+<body translate="no" >
+
+  
+  
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js'></script>
+
+  
+
+    <script >
+      var _createClass = function () {function defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}return function (Constructor, protoProps, staticProps) {if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;};}();function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}console.clear();
+
+var land = '#6365de',
+water = '#943c84',
+steel = '#b5b2b5';
+
+
+var speed = 2;
+
+
+var b = void 0,
+pipes = [],
+plane = void 0,
+log = void 0,
+hitsCount = 0,
+xoff = 0;
+
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  noStroke();
+  b = new Bird();
+  plane = new Plane();
+  log = new Log();
+  // noLoop();
+}
+
+function draw() {
+  background(water);
+
+  if (frameCount % 10 === 0) {
+    xoff += 1;
+    pipes.push(new Pipe({
+      w: xoff }));
+
+  }
+
+  for (var i = pipes.length - 1; i > 0; i--) {
+    pipes[i].render();
+    pipes[i].update();
+
+    if (pipes[i].hits(plane)) {
+      // console.log(`${frameCount}: HITS`);
+      log.updateText(hitsCount++);
+    }
+
+    if (pipes[i].offscreen()) {
+      pipes.splice(i, 1);
+    }
+  }
+
+  plane.render();
+  plane.update();
+
+
+  log.render();
+
+
+}
+
+
+
+function keyPressed() {
+  if (key == ' ') {
+    b.up();
+  }
+}
+
+function mouseMoved() {
+  log.updateText(mouseX);
+  if (mouseX < width / 2 - 50) {
+    plane.dir = -1;
+  } else if (mouseX > width / 2 + 50) {
+    plane.dir = 1;
+  } else {
+    plane.dir = 0;
+  }
+}
+
+function mousePressed() {
+  b.up();
+}
+
+/*function onOrientationChange (e) {
+    alert();
+  } */
+
+function deviceMoved(e) {
+  alert(e.alpha, e.beta, e.gamma);
+}
+
+function deviceTurned(e) {
+  alert(e.alpha, e.beta, e.gamma);
+}
+
+function deviceShaken() {
+  alert('deviceShaken');
+}
+
+window.addEventListener('deviceorientation', function (e) {
+  // alert('ddd');
+
+  var alpha = e.alpha,
+  beta = e.beta,
+  gamma = e.gamma;
+
+
+  plane.dir = e.gamma * .5;
+
+  // log.updateText(alpha + " " + beta + " " + gamma);
+});
+
+
+
+/* ----------------------------------------
+    	Plane
+    ---------------------------------------- */var
+Plane = function () {
+  function Plane() {_classCallCheck(this, Plane);
+    this.pos = createVector(width / 2, height - 80);
+    this.w = 10;
+    this.h = 20;
+    this.dir = 0;
+    this.img = loadImage("https://cdn.pbrd.co/images/HMwTZsG.png");
+  }_createClass(Plane, [{ key: 'render', value: function render()
+
+    {
+      fill(steel);
+      // rect(this.pos.x, this.pos.y, 10, 10)
+      image(this.img, this.pos.x, this.pos.y);
+    } }, { key: 'update', value: function update()
+
+    {
+      this.pos.x += this.dir;
+      this.pos.x = constrain(this.pos.x, 0, width - this.w);
+      /*
+                                                             if( this.pos.x > width - this.w) {
+                                                               this.pos.x = width - this.w;
+                                                             } else if ( this.pos.x < 0) {
+                                                               this.pos.x = 0;
+                                                             }*/
+
+    } }]);return Plane;}();
+
+
+
+
+
+
+/* ----------------------------------------
+                            	Text
+                            ---------------------------------------- */var
+Log = function () {
+
+  function Log(text) {_classCallCheck(this, Log);
+    this.text = text;
+  }_createClass(Log, [{ key: 'render', value: function render()
+
+    {
+      textSize(12);
+      textFont('Press Start 2P');
+      text(this.text, 10, 30);
+      fill(0, 102, 153);
+    } }, { key: 'updateText', value: function updateText(
+
+    t) {
+      this.text = t;
+    } }]);return Log;}();
+
+
+
+
+
+
+/* ----------------------------------------
+                          	Bird Class
+                          ---------------------------------------- */var
+Bird = function () {
+
+  function Bird() {_classCallCheck(this, Bird);
+    this.x = 100;
+    this.y = 100;
+    this.size = 30;
+    this.gravity = .6;
+    this.lift = -10;
+    this.velocity = 0;
+  }_createClass(Bird, [{ key: 'render', value: function render()
+
+    {
+      fill('#F28F3B');
+      ellipse(this.x, this.y, this.size, this.size);
+    } }, { key: 'up', value: function up()
+
+    {
+      this.velocity += this.lift;
+    } }, { key: 'update', value: function update()
+
+    {
+      var yLimitBtm = height - this.size / 2;
+      var yLimitTop = this.size / 2;
+
+      this.velocity += this.gravity;
+      this.y += this.velocity;
+
+      if (this.y >= yLimitBtm) {
+        this.y = yLimitBtm;
+        this.velocity = 0;
+      }
+
+      if (this.y < yLimitTop) {
+        this.y = yLimitTop;
+        this.velocity = 0;
+      }
+
+    } }]);return Bird;}();
+
+
+
+
+/* ----------------------------------------
+                           	Pipe Class
+                           ---------------------------------------- */var
+Pipe = function () {
+
+  function Pipe(config) {_classCallCheck(this, Pipe);
+    this.y = -20;
+    this.w = noise(config.w) * (width / 2);
+    this.h = 20;
+    this.speed = 2;
+    this.offView = false;
+    this.highlight = false;
+  }_createClass(Pipe, [{ key: 'render', value: function render()
+
+    {
+      fill(land);
+      if (this.highlight) {
+        fill(255, 0, 0);
+      }
+      noStroke();
+      rect(0, this.y, this.w, this.h);
+      rect(width - this.w, this.y, width, this.h);
+
+
+      // rect(this.x, 0, this.w, this.top);
+      // rect(this.x, height - this.bottom, this.w, this.bottom);
+    } }, { key: 'update', value: function update()
+
+    {
+      this.y += this.speed;
+    } }, { key: 'offscreen', value: function offscreen()
+
+    {
+      return this.y > height;
+    } }, { key: 'hits', value: function hits(
+
+    plane) {
+      if (this.y + this.h > plane.pos.y) {
+        if (plane.pos.x < this.w || plane.pos.x > width - this.w) {
+          this.highlight = true;
+          return true;
+        }
+
+      }
+      return false;
+    } }]);return Pipe;}();
+    </script>
+
+
+
+  
+  
+
+  <script src="https://static.codepen.io/assets/editor/live/css_reload-2a5c7ad0fe826f66e054c6020c99c1e1c63210256b6ba07eb41d7a4cb0d0adab.js"></script>
+</body>
+
+</html>
+ 
