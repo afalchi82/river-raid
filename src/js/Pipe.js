@@ -8,7 +8,6 @@ class Pipe {
     this.w = noise(config.w) * (width/2);
     this.h = 20;
     this.speed = 2;
-    this.offView = false;
     this.highlight = false;
   }
 	

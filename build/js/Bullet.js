@@ -5,55 +5,37 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /* ----------------------------------------
-	Plane
+	Bullet
 ---------------------------------------- */
-var Plane = function () {
-  function Plane() {
-    _classCallCheck(this, Plane);
+var Bullet = function () {
+  function Bullet(planePosX) {
+    _classCallCheck(this, Bullet);
 
-    this.pos = createVector(width / 2, height - 80);
-    this.w = 10;
-    this.h = 20;
-    this.dir = 0;
-    this.imgC = loadImage("img/plane.png");
-    this.imgL = loadImage("img/plane-left.png");
-    this.imgR = loadImage("img/plane-right.png");
+    this.x = planePosX;
+    this.y = height - 80;
+    this.w = 4;
+    this.h = 10;
+    this.speed = 3;
   }
 
-  _createClass(Plane, [{
+  _createClass(Bullet, [{
     key: "render",
     value: function render() {
       fill(steel);
-      var sprite = void 0;
-      switch (true) {
-        case this.dir > -2 && this.dir < 2:
-          sprite = this.imgC;
-          break;
-        case this.dir < 2:
-          sprite = this.imgL;
-          break;
-        case this.dir > 2:
-          sprite = this.imgR;
-          break;
-        default:
-          sprite = this.imgC;
-      }
-      image(sprite, this.pos.x, this.pos.y, 100, 100);
+      rect(this.x, this.y, this.w, this.h);
     }
   }, {
     key: "update",
     value: function update() {
-      this.pos.x += this.dir;
-      this.pos.x = constrain(this.pos.x, 0, width - this.w);
-      /*
-      if( this.pos.x > width - this.w) {
-        this.pos.x = width - this.w;
-      } else if ( this.pos.x < 0) {
-        this.pos.x = 0;
-      }*/
+      this.y -= this.speed;
+    }
+  }, {
+    key: "offscreen",
+    value: function offscreen() {
+      return this.y < 0;
     }
   }]);
 
-  return Plane;
+  return Bullet;
 }();
 //# sourceMappingURL=Bullet.js.map

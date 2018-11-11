@@ -18,12 +18,9 @@ function mouseMoved() {
 }
 
 function mousePressed() {
-  b.up();
+  bullets.push(new Bullet(plane.pos.x));
+  console.log(bullets.length);
 }
-
-/*function onOrientationChange (e) {
-  alert();
-} */
 
 function deviceMoved(e) {
   alert(e.alpha, e.beta, e.gamma);

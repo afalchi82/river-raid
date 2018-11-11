@@ -7,12 +7,12 @@ const land = '#6365de',
 const speed = 2;
 
 
-let b,
-  pipes = [],
-  plane,
-  log,
-  hitsCount = 0,
-  xoff = 0
+let bullets = [],
+    pipes = [],
+    plane,
+    log,
+    hitsCount = 0,
+    xoff = 0
 ;
 
 function setup() {
@@ -45,6 +45,15 @@ function draw() {
     
     if (pipes[i].offscreen()) {
     	pipes.splice(i, 1);
+    }
+  }
+
+  for(let i = bullets.length-1; i > 0; i--) {
+    bullets[i].render();
+    bullets[i].update();
+
+    if (bullets[i].offscreen()) {
+      bullets.splice(i, 1);
     }
   }
   

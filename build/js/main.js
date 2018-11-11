@@ -6,7 +6,7 @@ var land = '#6365de',
 
 var speed = 2;
 
-var b = void 0,
+var bullets = [],
     pipes = [],
     plane = void 0,
     log = void 0,
@@ -43,6 +43,15 @@ function draw() {
 
     if (pipes[i].offscreen()) {
       pipes.splice(i, 1);
+    }
+  }
+
+  for (var _i = bullets.length - 1; _i > 0; _i--) {
+    bullets[_i].render();
+    bullets[_i].update();
+
+    if (bullets[_i].offscreen()) {
+      bullets.splice(_i, 1);
     }
   }
 

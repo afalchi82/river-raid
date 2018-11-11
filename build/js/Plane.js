@@ -12,7 +12,7 @@ var Plane = function () {
     _classCallCheck(this, Plane);
 
     this.pos = createVector(width / 2, height - 80);
-    this.w = 10;
+    this.w = 20;
     this.h = 20;
     this.dir = 0;
     this.imgC = loadImage("https://cdn.pbrd.co/images/HMHxkcY.png");
@@ -38,7 +38,7 @@ var Plane = function () {
         default:
           sprite = this.imgC;
       }
-      image(sprite, this.pos.x, this.pos.y);
+      image(sprite, this.pos.x, this.pos.y, this.w, this.w);
     }
   }, {
     key: "update",
